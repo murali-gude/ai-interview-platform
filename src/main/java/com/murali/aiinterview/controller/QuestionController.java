@@ -1,7 +1,7 @@
 package com.murali.aiinterview.controller;
 
 import com.murali.aiinterview.entity.Question;
-import com.murali.aiinterview.repository.QuestionRepository;
+import com.murali.aiinterview.service.QuestionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +10,19 @@ import java.util.List;
 @RequestMapping("/questions")
 public class QuestionController {
 
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
 
-    public QuestionController(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     @PostMapping
     public Question createQuestion(@RequestBody Question question) {
-        return questionRepository.save(question);
+        return questionService.saveQuestion(question);
     }
 
     @GetMapping
     public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
+        return questionService.getAllQuestions();
     }
 }
