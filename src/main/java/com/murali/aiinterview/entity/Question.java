@@ -13,8 +13,10 @@ public class Question {
     private Long id;
 
     private String questionText;
-
     private String answer;
-
     private String technology;
+
+    @ManyToOne
+    @JoinColumn(name = "interview_id")
+    private Interview interview;
 }
