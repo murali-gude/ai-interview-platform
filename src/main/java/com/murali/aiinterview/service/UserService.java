@@ -22,4 +22,27 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public User updateUser(Long id, User userDetails) {
+        User existingUser = userRepository.findById(id).orElse(null);
+
+        if (existingUser == null) {
+            return null;
+        }
+
+        existingUser.setName(userDetails.getName());
+        existingUser.setEmail(userDetails.getEmail());
+        existingUser.setPassword(userDetails.getPassword());
+
+        return userRepository.save(existingUser);
+    }
+
+    public String deleteUser(Long id) {
+        userRepository.deleteById(id);
+        return "User deleted successfully";
+    }
 }
