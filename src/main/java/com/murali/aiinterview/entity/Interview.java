@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "interviews")
 public class Interview {
 
     @Id
@@ -14,11 +15,13 @@ public class Interview {
     private Long id;
 
     private String title;
-    private String technology;
-    private String difficulty;
-    private int numberOfQuestions;
 
-    @OneToMany(mappedBy = "interview",
-            cascade = CascadeType.ALL)
+    private String technology;
+
+    private String difficulty;
+
+    private Integer numberOfQuestions;
+
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL)
     private List<Question> questions;
 }

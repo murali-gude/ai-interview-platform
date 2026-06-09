@@ -25,4 +25,17 @@ public class QuestionController {
     public List<Question> getAllQuestions() {
         return questionService.getAllQuestions();
     }
+
+    @PostMapping("/interview/{interviewId}")
+    public Question addQuestionToInterview(
+            @PathVariable Long interviewId,
+            @RequestBody Question question
+    ) {
+        return questionService.addQuestionToInterview(interviewId, question);
+    }
+
+    @GetMapping("/interview/{interviewId}")
+    public List<Question> getQuestionsByInterviewId(@PathVariable Long interviewId) {
+        return questionService.getQuestionsByInterviewId(interviewId);
+    }
 }
