@@ -1,6 +1,7 @@
 package com.murali.aiinterview.service;
 
 import com.murali.aiinterview.entity.User;
+import com.murali.aiinterview.exception.ResourceNotFoundException;
 import com.murali.aiinterview.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +25,14 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + id));
     }
 
     public User updateUser(Long id, User userDetails) {
-        User existingUser = userRepository.findById(id).orElse(null);
-
-        if (existingUser == null) {
-            return null;
-        }
+        User existingUser = getUserById(id);
 
         existingUser.setName(userDetails.getName());
         existingUser.setEmail(userDetails.getEmail());
@@ -42,7 +42,8 @@ public class UserService {
     }
 
     public String deleteUser(Long id) {
-        userRepository.deleteById(id);
+        User existingUser = getUserById(id);
+        userRepository.delete(existingUser);
         return "User deleted successfully";
     }
 }

@@ -2,6 +2,7 @@ package com.murali.aiinterview.service;
 
 import com.murali.aiinterview.entity.Interview;
 import com.murali.aiinterview.entity.Question;
+import com.murali.aiinterview.exception.ResourceNotFoundException;
 import com.murali.aiinterview.repository.InterviewRepository;
 import com.murali.aiinterview.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,18 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public Question addQuestionToInterview(Long interviewId, Question question) {
-        Interview interview = interviewRepository.findById(interviewId).orElse(null);
+    public Question getQuestionById(Long id) {
+        return questionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Question not found with id: " + id));
+    }
 
-        if (interview == null) {
-            return null;
-        }
+    public Question addQuestionToInterview(Long interviewId, Question question) {
+        Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Interview not found with id: " + interviewId));
 
         question.setInterview(interview);
         return questionRepository.save(question);
