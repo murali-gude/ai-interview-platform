@@ -22,4 +22,8 @@ public class InterviewService {
     public List<Interview> getAllInterviews() {
         return interviewRepository.findAll();
     }
+
+    public Interview getInterviewById(Long id) {
+        return interviewRepository.findById(id).orElse(null);
+    }
 }
