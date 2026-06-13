@@ -8,6 +8,7 @@ import com.murali.aiinterview.entity.User;
 import com.murali.aiinterview.security.JwtUtil;
 import com.murali.aiinterview.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,6 +67,23 @@ public class UserController {
                 true,
                 "Login successful",
                 loginResponse
+        );
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<User> getLoggedInUser() {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userService.getUserByEmail(email);
+
+        return new ApiResponse<>(
+                true,
+                "Logged-in user fetched successfully",
+                user
         );
     }
 

@@ -31,6 +31,37 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User login(String email, String password) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new ResourceNotFoundException(
+                    "User not found with email: " + email);
+        }
+
+        boolean passwordMatches =
+                passwordEncoder.matches(password, user.getPassword());
+
+        if (!passwordMatches) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return user;
+    }
+
+    public User getUserByEmail(String email) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new ResourceNotFoundException(
+                    "User not found with email: " + email);
+        }
+
+        return user;
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -59,24 +90,5 @@ public class UserService {
         User existingUser = getUserById(id);
         userRepository.delete(existingUser);
         return "User deleted successfully";
-    }
-
-    public User login(String email, String password) {
-
-        User user = userRepository.findByEmail(email);
-
-        if (user == null) {
-            throw new ResourceNotFoundException(
-                    "User not found with email: " + email);
-        }
-
-        boolean passwordMatches =
-                passwordEncoder.matches(password, user.getPassword());
-
-        if (!passwordMatches) {
-            throw new RuntimeException("Invalid password");
-        }
-
-        return user;
     }
 }
