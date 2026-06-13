@@ -3,6 +3,7 @@ package com.murali.aiinterview.service;
 import com.murali.aiinterview.entity.User;
 import com.murali.aiinterview.exception.ResourceNotFoundException;
 import com.murali.aiinterview.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +12,22 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User saveUser(User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+
         return userRepository.save(user);
     }
 
@@ -36,7 +47,10 @@ public class UserService {
 
         existingUser.setName(userDetails.getName());
         existingUser.setEmail(userDetails.getEmail());
-        existingUser.setPassword(userDetails.getPassword());
+
+        existingUser.setPassword(
+                passwordEncoder.encode(userDetails.getPassword())
+        );
 
         return userRepository.save(existingUser);
     }
@@ -45,5 +59,24 @@ public class UserService {
         User existingUser = getUserById(id);
         userRepository.delete(existingUser);
         return "User deleted successfully";
+    }
+
+    public User login(String email, String password) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new ResourceNotFoundException(
+                    "User not found with email: " + email);
+        }
+
+        boolean passwordMatches =
+                passwordEncoder.matches(password, user.getPassword());
+
+        if (!passwordMatches) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return user;
     }
 }

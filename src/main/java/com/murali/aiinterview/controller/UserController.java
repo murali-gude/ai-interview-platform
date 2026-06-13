@@ -1,6 +1,7 @@
 package com.murali.aiinterview.controller;
 
 import com.murali.aiinterview.dto.ApiResponse;
+import com.murali.aiinterview.dto.LoginRequest;
 import com.murali.aiinterview.dto.UserRequest;
 import com.murali.aiinterview.entity.User;
 import com.murali.aiinterview.service.UserService;
@@ -34,6 +35,21 @@ public class UserController {
                 true,
                 "User created successfully",
                 savedUser
+        );
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<User> login(@RequestBody LoginRequest request) {
+
+        User user = userService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return new ApiResponse<>(
+                true,
+                "Login successful",
+                user
         );
     }
 
