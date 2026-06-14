@@ -1,9 +1,7 @@
 package com.murali.aiinterview.service;
 
-import com.murali.aiinterview.entity.Interview;
 import com.murali.aiinterview.entity.Question;
 import com.murali.aiinterview.exception.ResourceNotFoundException;
-import com.murali.aiinterview.repository.InterviewRepository;
 import com.murali.aiinterview.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +11,9 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-    private final InterviewRepository interviewRepository;
 
-    public QuestionService(
-            QuestionRepository questionRepository,
-            InterviewRepository interviewRepository
-    ) {
+    public QuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
-        this.interviewRepository = interviewRepository;
     }
 
     public Question saveQuestion(Question question) {
@@ -35,20 +28,32 @@ public class QuestionService {
         return questionRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "Question not found with id: " + id));
+                                "Question not found with id: " + id
+                        ));
     }
 
-    public Question addQuestionToInterview(Long interviewId, Question question) {
-        Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Interview not found with id: " + interviewId));
-
-        question.setInterview(interview);
-        return questionRepository.save(question);
+    public List<Question> getQuestionsByTechnology(String technology) {
+        return questionRepository.findByTechnology(technology);
     }
 
     public List<Question> getQuestionsByInterviewId(Long interviewId) {
         return questionRepository.findByInterviewId(interviewId);
+    }
+
+    public Question updateQuestion(Long id, Question questionDetails) {
+        Question existingQuestion = getQuestionById(id);
+
+        existingQuestion.setQuestionText(questionDetails.getQuestionText());
+        existingQuestion.setAnswer(questionDetails.getAnswer());
+        existingQuestion.setTechnology(questionDetails.getTechnology());
+        existingQuestion.setInterview(questionDetails.getInterview());
+
+        return questionRepository.save(existingQuestion);
+    }
+
+    public String deleteQuestion(Long id) {
+        Question existingQuestion = getQuestionById(id);
+        questionRepository.delete(existingQuestion);
+        return "Question deleted successfully";
     }
 }

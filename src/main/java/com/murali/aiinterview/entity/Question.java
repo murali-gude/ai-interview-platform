@@ -1,6 +1,5 @@
 package com.murali.aiinterview.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,10 +13,11 @@ public class Question {
     private Long id;
 
     private String questionText;
+
     private String answer;
+
     private String technology;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "interview_id")
     private Interview interview;

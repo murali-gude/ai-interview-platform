@@ -1,6 +1,6 @@
 package com.murali.aiinterview.controller;
 
-import com.murali.aiinterview.dto.QuestionResponse;
+import com.murali.aiinterview.dto.ApiResponse;
 import com.murali.aiinterview.dto.StartInterviewResponse;
 import com.murali.aiinterview.entity.Interview;
 import com.murali.aiinterview.service.InterviewService;
@@ -28,31 +28,20 @@ public class InterviewController {
         return interviewService.getAllInterviews();
     }
 
-    @GetMapping("/start/{id}")
-    public StartInterviewResponse startInterview(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public Interview getInterviewById(@PathVariable Long id) {
+        return interviewService.getInterviewById(id);
+    }
 
-        Interview interview = interviewService.getInterviewById(id);
+    @PostMapping("/{id}/start")
+    public ApiResponse<StartInterviewResponse> startInterview(@PathVariable Long id) {
 
-        StartInterviewResponse response = new StartInterviewResponse();
+        StartInterviewResponse response = interviewService.startInterview(id);
 
-        response.setInterviewId(interview.getId());
-        response.setTitle(interview.getTitle());
-        response.setTechnology(interview.getTechnology());
-        response.setDifficulty(interview.getDifficulty());
-
-        List<QuestionResponse> questions = interview.getQuestions()
-                .stream()
-                .map(q -> {
-                    QuestionResponse qr = new QuestionResponse();
-                    qr.setId(q.getId());
-                    qr.setQuestionText(q.getQuestionText());
-                    qr.setTechnology(q.getTechnology());
-                    return qr;
-                })
-                .toList();
-
-        response.setQuestions(questions);
-
-        return response;
+        return new ApiResponse<>(
+                true,
+                "Interview started successfully",
+                response
+        );
     }
 }

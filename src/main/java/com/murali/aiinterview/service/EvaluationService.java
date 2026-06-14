@@ -32,12 +32,17 @@ public class EvaluationService {
                     .orElse(null);
 
             if (question != null &&
-                    question.getAnswer().equalsIgnoreCase(answerRequest.getUserAnswer())) {
+                    question.getAnswer() != null &&
+                    answerRequest.getUserAnswer() != null &&
+                    question.getAnswer().equalsIgnoreCase(
+                            answerRequest.getUserAnswer())) {
+
                 correctAnswers++;
             }
         }
 
         InterviewResult result = new InterviewResult();
+
         result.setTotalQuestions(request.getAnswers().size());
         result.setCorrectAnswers(correctAnswers);
 
