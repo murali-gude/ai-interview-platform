@@ -47,7 +47,10 @@ public class InterviewService {
         Interview interview = getInterviewById(interviewId);
 
         List<Question> questions =
-                questionRepository.findByTechnology(interview.getTechnology());
+                questionRepository.findByTechnology(interview.getTechnology())
+                        .stream()
+                        .limit(interview.getNumberOfQuestions())
+                        .toList();
 
         List<QuestionResponse> questionResponses = new ArrayList<>();
 
