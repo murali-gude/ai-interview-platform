@@ -4,6 +4,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import CreateInterview from "./pages/CreateInterview";
 import StartInterview from "./pages/StartInterview";
+import Result from "./pages/Result";
+import ResultsHistory from "./pages/ResultsHistory";
 
 function App() {
     return (
@@ -13,11 +15,12 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create-interview" element={<CreateInterview />} />
-
             <Route
                 path="/interview/:interviewId"
                 element={<StartInterview />}
             />
+            <Route path="/result" element={<Result />} />
+            <Route path="/results-history" element={<ResultsHistory />} />
         </Routes>
     );
 }

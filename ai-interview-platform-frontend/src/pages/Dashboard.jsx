@@ -31,6 +31,7 @@ function Dashboard() {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("userName");
+        localStorage.removeItem("latestInterviewResult");
 
         navigate("/login");
     };
@@ -69,7 +70,9 @@ function Dashboard() {
                                 <h3>Interview Results</h3>
                                 <p>View your previous scores and results.</p>
 
-                                <button>View Results</button>
+                                <button onClick={() => navigate("/results-history")}>
+                                    View Results
+                                </button>
                             </div>
                         </section>
                     </>
