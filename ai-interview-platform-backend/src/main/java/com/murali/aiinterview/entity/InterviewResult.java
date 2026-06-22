@@ -20,6 +20,18 @@ public class InterviewResult {
 
     private String resultStatus;
 
+    @Column(columnDefinition = "TEXT")
+    private String feedback;
+
+    @Column(columnDefinition = "TEXT")
+    private String strengths;
+
+    @Column(columnDefinition = "TEXT")
+    private String weaknesses;
+
+    @Column(columnDefinition = "TEXT")
+    private String improvedAnswer;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

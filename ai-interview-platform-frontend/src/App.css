@@ -453,3 +453,18 @@ button {
     grid-template-columns: 1fr;
   }
 }
+.result-section {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8f9fa;
+}
+
+.result-section h3 {
+  margin-bottom: 10px;
+}
+
+.result-section p {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}

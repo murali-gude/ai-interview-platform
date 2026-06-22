@@ -3,6 +3,7 @@ package com.murali.aiinterview.service;
 import com.murali.aiinterview.entity.Interview;
 import com.murali.aiinterview.entity.InterviewResult;
 import com.murali.aiinterview.entity.User;
+import com.murali.aiinterview.exception.ResourceNotFoundException;
 import com.murali.aiinterview.repository.InterviewRepository;
 import com.murali.aiinterview.repository.InterviewResultRepository;
 import com.murali.aiinterview.repository.UserRepository;
@@ -27,15 +28,53 @@ public class InterviewResultService {
         this.interviewRepository = interviewRepository;
     }
 
-    public InterviewResult saveResult(Long userId, Long interviewId, InterviewResult result) {
-        User user = userRepository.findById(userId).orElse(null);
-        Interview interview = interviewRepository.findById(interviewId).orElse(null);
+    public InterviewResult saveResult(
+            Long userId,
+            Long interviewId,
+            InterviewResult result
+    ) {
 
-        if (user == null || interview == null) {
-            return null;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + userId
+                        )
+                );
+
+        Interview interview = interviewRepository
+                .findById(interviewId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Interview not found with id: "
+                                        + interviewId
+                        )
+                );
+
+        if (result.getTotalQuestions() == null ||
+                result.getTotalQuestions() <= 0) {
+
+            throw new IllegalArgumentException(
+                    "Total questions must be greater than zero."
+            );
         }
 
-        double percentage = (result.getCorrectAnswers() * 100.0) / result.getTotalQuestions();
+        /*
+         * AI EvaluationService already calculates percentage
+         * using the average AI score.
+         *
+         * This fallback keeps compatibility with older evaluation logic.
+         */
+        double percentage;
+
+        if (result.getPercentage() != null) {
+            percentage = result.getPercentage();
+        } else {
+            percentage =
+                    result.getCorrectAnswers() * 100.0
+                            / result.getTotalQuestions();
+        }
+
+        percentage = Math.max(0, Math.min(100, percentage));
 
         result.setPercentage(percentage);
 
@@ -59,3 +98,4 @@ public class InterviewResultService {
         return resultRepository.findByUserId(userId);
     }
 }
+
