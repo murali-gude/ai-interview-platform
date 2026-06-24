@@ -1,101 +1,81 @@
-# AI-Powered Interview Preparation Platform
+# AI Interview Platform
 
 ## Overview
 
-AI-Powered Interview Preparation Platform is a Spring Boot based application that helps users prepare for technical interviews by creating interview sessions, answering questions, and receiving evaluation results.
+AI Interview Platform is a full-stack web application that allows users to:
 
-## Features
+* Register and Login using JWT Authentication
+* Create technical interviews
+* Start interviews with generated questions
+* Submit answers
+* Receive automatic evaluation and scoring
+* View interview history and previous results
 
-### User Management
-
-* User Registration
-* User Login
-* JWT Authentication
-
-### Question Management
-
-* Create Questions
-* Update Questions
-* Delete Questions
-* Get Questions by ID
-* Get All Questions
-
-### Interview Management
-
-* Create Interview
-* Start Interview
-* Fetch Technology-Specific Questions
-
-### Evaluation & Results
-
-* Submit Answers
-* Evaluate Responses
-* Calculate Score
-* Pass/Fail Decision
-* Store Interview Results
-* View User Results
-
-## Technology Stack
+## Tech Stack
 
 ### Backend
 
 * Java 17
 * Spring Boot
 * Spring Security
-* Spring Data JPA
-* Hibernate
 * JWT Authentication
-
-### Database
-
+* Spring Data JPA
 * MySQL
-
-### Tools
-
 * Maven
-* Postman
-* Git
-* GitHub
 
-## API Endpoints
+### Frontend
+
+* React.js
+* React Router
+* Axios
+* CSS
+
+## Features
 
 ### Authentication
 
-POST /users/register
-POST /users/login
+* User Registration
+* User Login
+* JWT Token Security
 
-### Questions
+### Interview Management
 
-GET /questions
-GET /questions/{id}
-POST /questions
-PUT /questions/{id}
-DELETE /questions/{id}
-
-### Interviews
-
-GET /interviews
-GET /interviews/{id}
-POST /interviews
-POST /interviews/{id}/start
-DELETE /interviews/{id}
+* Create Interview
+* Start Interview
+* Question Management
 
 ### Evaluation
 
-POST /evaluation
+* Automatic Answer Evaluation
+* Score Calculation
+* PASS / FAIL Status
+* Feedback Generation
 
 ### Results
 
-GET /results
-GET /results/user/{userId}
+* Detailed Result Report
+* Interview History
+* Previous Attempts Tracking
 
-## Project Status
+## Project Structure
 
-Backend Development Completed Successfully.
+Backend:
+src/main/java/com/murali/aiinterview
 
-Future Enhancements:
+Frontend:
+src/pages
+src/components
+src/services
 
-* React Frontend
-* AI-Based Answer Evaluation
-* Interview Analytics Dashboard
-* Voice-Based Mock Interviews
+## Future Enhancements
+
+* OpenAI Based Evaluation
+* Voice Interviews
+* Video Interviews
+* AI Feedback Analytics
+* Interview Performance Dashboard
+
+## Author
+
+Murali Chowdary
+Java Full Stack Developer
